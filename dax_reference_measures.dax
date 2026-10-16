@@ -1,0 +1,22 @@
+// Power BI DAX Financial & Sales Reference Measures
+// Author: Prashant Kumar
+
+Total Revenue = SUM(Sales[NetRevenue])
+
+Total Cost = SUM(Sales[Cost])
+
+Gross Profit = [Total Revenue] - [Total Cost]
+
+Gross Profit Margin = DIVIDE([GrossProfit], [Total Revenue], 0)
+
+YoY Sales Growth = 
+VAR CurrentYearSales = [Total Revenue]
+VAR PriorYearSales = CALCULATE([Total Revenue], SAMEPERIODLASTYEAR('Calendar'[Date]))
+RETURN
+DIVIDE(CurrentYearSales - PriorYearSales, PriorYearSales, 0)
+
+Top 10 Customers Revenue = 
+CALCULATE(
+    [Total Revenue],
+    TOPN(10, ALL(Customer[CustomerID]), [Total Revenue], DESC)
+)
